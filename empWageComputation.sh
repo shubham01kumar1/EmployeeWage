@@ -1,6 +1,5 @@
 #!/bin/bash -x
-
-declare -a dailyWage
+declare -A dailyWage
 
 IS_PRESENT_FULL_TIME=1
 IS_PRESENT_HALF_TIME=2
@@ -9,13 +8,13 @@ MAX_WORK_DAYS=20
 MAX_WORK_HR=70
 
 totalWorkHR=0
-day=0
+day=1
 
-function getWorkHR(){
+function getworkHR(){
 	local emp=$1
 	local empHrs=0
 	#selection
-	case $emp in
+	case $empCheck in
 		$IS_PRESENT_FULL_TIME)
 			empHrs=8;;
 		$IS_PRESENT_HALF_TIME)
@@ -26,22 +25,18 @@ function getWorkHR(){
 	echo $empHrs
 }
 
-function getEmpWage() {
-	local empHr=$1
-	echo $((empHr * WAGE_PER_HR))
-}
-while [ $day -lt $MAX_WORK_DAYS ] && [ $totalWorkHR -lt $MAX_WORK_HR ]
+while [ $day -le $MAX_WORK_DAYS ] && [ $totalWorkHR -lt $MAX_WORK_HR ]
 do
 	#variable
 	empCheck=$(( RANDOM % 3 ))
 	#calling a function
-	empHrs="$( getWorkHR $empCheck )"
+	empHrs="$( getworkHR $empCheck )"
 	#calculation
 	totalWorkHR=$(( totalWorkHR + empHrs ))
-	#storing daily
-	dailyWage[$day]="$(getEmpWage $empHrs)"
+	#storing daily wages to an dictionary of key contains day_(1-20)
+	dailyWage[$day]=$((empHrs * WAGE_PER_HR))
 	((day++))
 done
-
-totalSalary=$((totalWorkHR * WAGE_PER_HR ))
-echo ${dailyWage[@]}
+totalSalary=$(( totalWorkHR * WAGE_PER_HR ))
+echo "day:       "${!dailyWage[@]}
+echo "dailyWages:"${dailyWage[@]}
