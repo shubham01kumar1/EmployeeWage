@@ -1,16 +1,21 @@
-#! /bin/bash -x
+#!/bin/bash -x
 
 # contant
-IS_PRESENT=1
+IS_PRESENT_FULL_TIME=1
+IS_PRESENT_HALF_TIME=2
 WAGE_PER_HR=20
 # variable
-empCheck=$(( RANDOM % 2 ))
+empCheck=$(( RANDOM % 3 ))
 
 #selection
-if [ $empCheck -eq $IS_PRESENT ]
+if [ $empCheck -eq $IS_PRESENT_FULL_TIME ]
 then
 	empHrs=8
-	salary=$(( empHrs * WAGE_PER_HR ))
+elif [ $empCheck -eq $IS_PRESENT_HALF_TIME ]
+then
+	empHrs=4
 else
-	salary=0
+	empHrs=0
 fi
+#calculation
+salary=$(( empHrs * WAGE_PER_HR ))
