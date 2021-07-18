@@ -8,14 +8,13 @@ WAGE_PER_HR=20
 empCheck=$(( RANDOM % 3 ))
 
 #selection
-if [ $empCheck -eq $IS_PRESENT_FULL_TIME ]
-then
-	empHrs=8
-elif [ $empCheck -eq $IS_PRESENT_HALF_TIME ]
-then
-	empHrs=4
-else
-	empHrs=0
-fi
+case $empCheck in
+	$IS_PRESENT_FULL_TIME)
+		empHrs=8;;
+	$IS_PRESENT_HALF_TIME)
+		empHrs=4;;
+	*)
+		empHrs=0;;
+esac
 #calculation
 salary=$(( empHrs * WAGE_PER_HR ))
